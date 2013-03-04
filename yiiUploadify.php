@@ -17,11 +17,17 @@ class yiiUploadify extends CInputWidget
 	//button width
 	public $width = '120';
 
+	//multiupload
+	public $multi = 'true';
+
 	//path to uploadify.swf
 	protected  $swfPath;
 
 	//id
 	protected $id = 'file_upload';
+
+	//turn on/off the SWFUpload debugging mode.
+	public $debug = 'false';
 
 	//run widget
 	public function run()
@@ -35,7 +41,9 @@ class yiiUploadify extends CInputWidget
 			width : '.$this->width.',
 			buttonText : "'.$this->buttonText.'",
 			swf : "'.$this->swfPath.'",
-			uploader : "'.$this->ajaxUrl.'"
+			uploader : "'.$this->ajaxUrl.'",
+			multi: '.$this->multi.',
+			debug : '.$this->debug.',
 		});
 		});';
 		Yii::app()->clientScript->registerScript('yiiUploadify', $script, CClientScript::POS_HEAD);
