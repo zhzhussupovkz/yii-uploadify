@@ -7,7 +7,7 @@ public function actionUpload()
 {
 	if(isset($_FILES['Filedata']))
 	{
-		$model = new Avatar;
+		$model = new MyModel;
 		$model->title = $_POST['title'];
 		$model->image = CUploadedFile::getInstanceByName('Filedata');
 		if ($model->save())
