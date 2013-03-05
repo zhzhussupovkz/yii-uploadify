@@ -1,29 +1,25 @@
 <?php
 
 //server side example
-//if ajaxUrl = 'site/upload' add this code to SideController
+//if uploader = 'site/upload' add this code to SiteController
+//server side exapmle
 public function actionUpload()
 {
-	// Define a destination
-	$targetFolder =  Yii::app()->request->baseUrl.'/uploads';
-
-	if (!empty($_FILES))
+	if(isset($_FILES['Filedata']))
 	{
-		$tempFile = $_FILES['Filedata']['tmp_name'];
-		$targetPath = $_SERVER['DOCUMENT_ROOT'] . $targetFolder;
-		$targetFile = rtrim($targetPath,'/') . '/' . $_FILES['Filedata']['name'];
-
-		// Validate the file type
-		$fileTypes = array('jpg','jpeg','gif','png'); // File extensions
-		$fileParts = pathinfo($_FILES['Filedata']['name']);
-
-		if (in_array($fileParts['extension'],$fileTypes)) 
+		$model = new Avatar;
+		$model->title = $_POST['title'];
+		$model->image = CUploadedFile::getInstanceByName('Filedata');
+		if ($model->save())
 		{
-			move_uploaded_file($tempFile,$targetFile);
+			if($model->image !== null)
+			{
+				$filename = Yii::app()->request->baseUrl.'/avatars/'.$model->id.'_helloworld.jpg';
+				$model->image->saveAs($_SERVER["DOCUMENT_ROOT"].$filename);
+			}
 		}
 		else
-		{
-			echo 'Invalid file type.';
-		}
+			throw new CHttpException(500, 'Internal server error');
+		Yii::app()->end();
 	}
 }
